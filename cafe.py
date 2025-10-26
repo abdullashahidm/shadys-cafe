@@ -1,5 +1,6 @@
 import random
 import sound
+from rapidfuzz import fuzz,process
 
 class Visit:
     def __init__(self):
@@ -11,7 +12,8 @@ def main():
     newline()
     _=input("Hit enter to go inside ")
     menu()
-    order()
+    final=order()
+    serve(final)
 
 def greet():
     cafe="""
@@ -82,10 +84,39 @@ def order():
             break
         else:
             items.append(reply)
-
-    print(f"Okay then, here's your order: {items}")  
+    print(summ(items))
     
-def valid(d):
-	valid=["biryani","pizza","lasagna","ice cream","mac n cheese","ice cream shake"]   
+def summ(order):  #summarize
+    valid=["biryani","pizza","lasagna","ice cream","mac n cheese","ice cream shake"]
+    rm=0
+    final=[]
+    removed=[]
+    for d in order: #dish
+        best,score,_=process.extractOne(d,valid,scorer=fuzz.WRatio)
+        if score>70:
+            final.append(best)
+        else:
+            rm+=1
+            removed.append(d)
+    if removed:
+        newline()
+        print(f"{rm} request(s) are/isn't on the menu, so they were removed:")
+        print(*removed)
+    return final
+  
+def serve(final):
+    biryani="""
+    """
+    lasagna="""
+    """
+    icecream="""
+    """
+    shake="""
+    """
+    mac="""
+    """
+    pizza="""
+    """
+      
 if __name__=="__main__":
     main()
