@@ -1,6 +1,7 @@
 import random
 import sound
 from rapidfuzz import fuzz,process
+import time
 
 class Visit:
     def __init__(self):
@@ -13,14 +14,24 @@ def main():
     _=input("Hit enter to go inside ")
     menu()
     final=order()
-    serve(final)
+    newline()
+    print("Getting order ready...")
+    newline()
+    time.sleep(3)
+    serve()
+    time.sleep(1)
+    _=input("When you've eaten, press enter ")
+    newline()
+    slip(final)
+    newline()
+    _=input("Hit enter to leave ")
 
 def greet():
     cafe="""
             ~ ~ ~      ☀      ~ ~ ~
           __|__|__|__|__|__|__|__|__|
          |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ |
-         |   🍷   🍇   🍷   🍇   |      
+         |   🍷   🍇   🍷   🍇       |      
          |   [▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒]    |
          |   [▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒]    |
          |   [▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒]    |
@@ -84,7 +95,7 @@ def order():
             break
         else:
             items.append(reply)
-    print(summ(items))
+    return (summ(items))
     
 def summ(order):  #summarize
     valid=["biryani","pizza","lasagna","ice cream","mac n cheese","ice cream shake"]
@@ -101,22 +112,40 @@ def summ(order):  #summarize
     if removed:
         newline()
         print(f"{rm} request(s) are/isn't on the menu, so they were removed:")
-        print(*removed)
+        for _ in removed:
+            print(_.capitalize())
+        newline()
     return final
   
-def serve(final):
-    biryani="""
+def serve():
+    tray="""
+              .-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.
+          |            DINNER TABLE               |
+.-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.
+|       ( )      ( )      ( )      ( )      ( )         |
+|      (___)    (___)    (___)    (___)    (___)        |
+|       | |      | |      | |      | |      | |         |
+|       | |      | |      | |      | |      | |         |
+|        \        \        \        \        \          |
+|         \________\________\________\________\         |
+|        ---      ---      ---      ---      ---        |
+|       (___)    (___)    (___)    (___)    (___)       |
+|        / \      / \      / \      / \      / \        |
+|       /___\    /___\    /___\    /___\    /___\       |
+|                                                     🍷 |
+`-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
     """
-    lasagna="""
-    """
-    icecream="""
-    """
-    shake="""
-    """
-    mac="""
-    """
-    pizza="""
-    """
-      
+    print(tray)
+    
+def slip(o): #order
+    print("+--------------------+")
+    print("|     ITEM BILL      |")
+    print("----------------------")
+    print("|                    |")
+    for e in o:
+        print(f"|>{e.capitalize()}")
+        print("|                    |")
+    print("+--------------------+")
+    
 if __name__=="__main__":
     main()
