@@ -3,17 +3,13 @@ import sound
 from rapidfuzz import fuzz,process
 import time
 
-class Visit:
-    def __init__(self):
-        ...
-
 def main():
     sound.start_music()
     greet()
     newline()
     _=input("Hit enter to go inside ")
     menu()
-    final=order()
+    final,price=order()
     newline()
     print("Getting order ready...")
     newline()
@@ -22,9 +18,11 @@ def main():
     time.sleep(1)
     _=input("When you've eaten, press enter ")
     newline()
-    slip(final)
+    slip(final,price)
     newline()
     _=input("Hit enter to leave ")
+    print("Thank you for coming! Come again soon")
+    time.sleep(1)
 
 def greet():
     cafe="""
@@ -98,7 +96,9 @@ def order():
     return (summ(items))
     
 def summ(order):  #summarize
+    price=0
     valid=["biryani","pizza","lasagna","ice cream","mac n cheese","ice cream shake"]
+    prices={"biryani":3.5,"pizza":11,"lasagna":6,"ice cream":3,"mac n cheese":2.5,"ice cream shake":6}
     rm=0
     final=[]
     removed=[]
@@ -106,6 +106,7 @@ def summ(order):  #summarize
         best,score,_=process.extractOne(d,valid,scorer=fuzz.WRatio)
         if score>70:
             final.append(best)
+            price+=prices[best]
         else:
             rm+=1
             removed.append(d)
@@ -115,7 +116,7 @@ def summ(order):  #summarize
         for _ in removed:
             print(_.capitalize())
         newline()
-    return final
+    return final,price
   
 def serve():
     tray="""
@@ -137,7 +138,7 @@ def serve():
     """
     print(tray)
     
-def slip(o): #order
+def slip(o,p): #order
     print("+--------------------+")
     print("|     ITEM BILL      |")
     print("----------------------")
@@ -145,6 +146,7 @@ def slip(o): #order
     for e in o:
         print(f"|>{e.capitalize()}")
         print("|                    |")
+    print(f"|TOTAL: ${p}")
     print("+--------------------+")
     
 if __name__=="__main__":
