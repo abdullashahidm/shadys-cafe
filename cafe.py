@@ -2,6 +2,7 @@ import random
 import sound
 from rapidfuzz import fuzz,process
 import time
+import re
 
 def main():
     sound.start_music()
@@ -20,7 +21,11 @@ def main():
     newline()
     slip(final,price)
     newline()
-    _=input("Hit enter to leave ")
+    _=input("Hit enter to pay ")
+    newline()
+    print(f"Recieved payment: --${price}--")
+    time.sleep(1)
+    newline()
     print("Thank you for coming! Come again soon")
     time.sleep(1)
 
@@ -103,15 +108,16 @@ def summ(order):  #summarize
     final=[]
     removed=[]
     for d in order: #dish
+        qty,txt=gq(d)
         best,score,_=process.extractOne(d,valid,scorer=fuzz.WRatio)
         if score>70:
-            final.append(best)
-            price+=prices[best]
+            if qty>0:
+                final.append(f"{qty} {best.capitalize()}")
+                price+=prices[best]*qty
         else:
             rm+=1
             removed.append(d)
     if removed:
-        newline()
         print(f"{rm} request(s) are/isn't on the menu, so they were removed:")
         for _ in removed:
             print(_.capitalize())
@@ -144,10 +150,26 @@ def slip(o,p): #order
     print("----------------------")
     print("|                    |")
     for e in o:
-        print(f"|>{e.capitalize()}")
+        print(f"|>{e}")
         print("|                    |")
     print(f"|TOTAL: ${p}")
     print("+--------------------+")
-    
+   
+def gq(txt): #get quantity
+    wTn={"one":1,"two":2,"three":3,"four":4,"five":5,"six":6,"seven":7,"eight":8,"nine":9,"ten":10} #word to number
+    match=re.match(r"(\d+)\s+(.*)",txt)
+    if match:
+        qty=int(match.group(1))
+        name=match.group(2)
+    else:
+        qty=1
+        name=txt
+    if qty>10:
+        newline()
+        print(f"About the {name}... O_O. That won't be possible, sir. (Or madam).")
+        qty=0
+        time.sleep(2)
+    return qty,name
+             
 if __name__=="__main__":
     main()
