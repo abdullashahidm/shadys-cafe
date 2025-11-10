@@ -1,7 +1,11 @@
-from cafe import order,summ,slip,gq
+import cafe
 import unittest
+from unittest.mock import patch,MagicMock
 
 class TestCafe(unittest.TestCase):
+	@patch("cafe.summ")
+	@patch("cafe.random.choice",rV="Ok") #return Value
+	@patch("builtins.input",sideeffect=["","yes","croissant"])
     def test_order():
         ...
 
