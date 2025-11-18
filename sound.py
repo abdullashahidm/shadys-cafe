@@ -1,3 +1,5 @@
+from os import environ
+environ['PYGAME_HIDE_SUPPORT PROMPT']='1'
 import pygame
 import threading
 import time
